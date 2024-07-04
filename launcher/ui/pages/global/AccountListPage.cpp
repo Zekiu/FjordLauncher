@@ -132,15 +132,32 @@ void AccountListPage::listChanged()
     updateButtonStates();
 }
 
+void AccountListPage::showLegalNotice()
+{
+    QMessageBox::warning(this, tr("Notice"),
+                         tr("Depending on the laws in your area, accessing Minecraft may require purchasing the game from Mojang."
+                            "<br><br>"
+                            "In order to limit dependence on nonfree network services, this Minecraft Launcher does not include DRM, "
+                            "but its developers do not condone the violation of any law. "));
+}
+
+void AccountListPage::on_actionAddMojang_triggered()
+{
+    MinecraftAccountPtr account =
+        LoginDialog::newAccount(this, tr("Please enter your Mojang account email and password to add your account."));
+
+    if (account) {
+        m_accounts->addAccount(account);
+        if (m_accounts->count() == 1) {
+            m_accounts->setDefaultAccount(account);
+        }
+    }
+}
+
 void AccountListPage::on_actionAddAuthlibInjector_triggered()
 {
-    if (!m_accounts->anyAccountIsValid()) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("You must add a Microsoft account that owns Minecraft before you can add an account on a custom "
-                                "authentication server."
-                                "<br><br>"
-                                "If you have lost your account you can contact Microsoft for support."));
-        return;
+    if (m_accounts->count() == 0) {
+        showLegalNotice();
     }
 
     MinecraftAccountPtr account = AuthlibInjectorLoginDialog::newAccount(
@@ -172,12 +189,8 @@ void AccountListPage::on_actionAddMicrosoft_triggered()
 
 void AccountListPage::on_actionAddOffline_triggered()
 {
-    if (!m_accounts->anyAccountIsValid()) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("You must add a Microsoft or Mojang account that owns Minecraft before you can add an offline account."
-                                "<br><br>"
-                                "If you have lost your account you can contact Microsoft for support."));
-        return;
+    if (m_accounts->count() == 0) {
+        showLegalNotice();
     }
 
     MinecraftAccountPtr account =
