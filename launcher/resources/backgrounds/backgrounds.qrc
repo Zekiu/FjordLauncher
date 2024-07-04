@@ -29,5 +29,10 @@
         <file alias="polly-xmas">polly-xmas.png</file>
         <file alias="polly-bday">polly-bday.png</file>
         <file alias="polly-spooky">polly.png</file>
+		<!-- wlodek -->
+		<file alias="wlod">wlod.png</file>
+        <file alias="wlod-xmas">wlod-xmas.png</file>
+        <file alias="wlod-bday">wlod-bday.png</file>
+        <file alias="wlod-spooky">wlod-spooky.png</file>
     </qresource>
 </RCC>
