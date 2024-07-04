@@ -560,8 +560,8 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
                                                this));
 
         // Theming
-        m_settings->registerSetting("IconTheme", QString());
-        m_settings->registerSetting("ApplicationTheme", QString());
+        m_settings->registerSetting("IconTheme", QString(""));
+        m_settings->registerSetting("ApplicationTheme", QString("dark"));
         m_settings->registerSetting("BackgroundCat", QString("wlod"));
 
         // Remembered state
@@ -686,7 +686,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting({ "PostExitCommand", "PostExitCmd" }, "");
 
         // The cat
-        m_settings->registerSetting("TheCat", false);
+        m_settings->registerSetting("TheCat", true);
 
         m_settings->registerSetting("ToolbarsLocked", false);
 

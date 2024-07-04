@@ -268,12 +268,9 @@ QString ThemeManager::addCatPack(std::unique_ptr<CatPack> catPack)
 
 void ThemeManager::initializeCatPacks()
 {
-    QList<std::pair<QString, QString>> defaultCats{ { "kitteh", QObject::tr("Background Cat (from MultiMC)") },
-                                                    { "rory", QObject::tr("Rory ID 11 (drawn by Ashtaka)") },
-                                                    { "rory-flat", QObject::tr("Rory ID 11 (flat edition, drawn by Ashtaka)") },
-                                                    { "teawie", QObject::tr("Teawie (drawn by SympathyTea)") },
-                                                    { "polly", QObject::tr("Polly the Parrot (drawn by anoraktrend)") },
-                                                    { "wlod", QObject::tr("Włodzimierz the Cat (kot selnov)") } };
+    QList<std::pair<QString, QString>> defaultCats{ { "wlod", QObject::tr("Włodzimierz the Cat (kot selnov)") },
+                                                    { "piwo", QObject::tr("Piwo Piwo Piwo Piwo") },
+                                                    { "wino", QObject::tr("Wino kot") } };
     for (auto [id, name] : defaultCats) {
         addCatPack(std::unique_ptr<CatPack>(new BasicCatPack(id, name)));
     }
