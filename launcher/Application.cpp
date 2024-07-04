@@ -578,7 +578,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         // Theming
         m_settings->registerSetting("IconTheme", QString());
         m_settings->registerSetting("ApplicationTheme", QString());
-        m_settings->registerSetting("BackgroundCat", QString("kitteh"));
+        m_settings->registerSetting("BackgroundCat", QString("wlod"));
 
         // Remembered state
         m_settings->registerSetting("LastUsedGroupForNewInstance", QString());
@@ -699,7 +699,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting("SkipModpackUpdatePrompt", false);
 
         // Missing authlib-injector behavior
-        m_settings->registerSetting("MissingAuthlibInjectorBehavior", MissingAuthlibInjectorBehavior::Ask);
+        m_settings->registerSetting("MissingAuthlibInjectorBehavior", MissingAuthlibInjectorBehavior::Install);
 
         // Minecraft offline player name
         m_settings->registerSetting("LastOfflinePlayerName", "");
