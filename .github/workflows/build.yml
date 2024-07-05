@@ -6,7 +6,7 @@ on:
       build_type:
         description: Type of build (Debug, Release, RelWithDebInfo, MinSizeRel)
         type: string
-        default: Debug
+        default: Release
       is_qt_cached:
         description: Enable Qt caching or not
         type: string
@@ -20,27 +20,6 @@ on:
         required: false
       WINDOWS_CODESIGN_PASSWORD:
         description: Password for signing Windows builds
-        required: false
-      APPLE_CODESIGN_CERT:
-        description: Certificate for signing macOS builds
-        required: false
-      APPLE_CODESIGN_PASSWORD:
-        description: Password for signing macOS builds
-        required: false
-      APPLE_CODESIGN_ID:
-        description: Certificate ID for signing macOS builds
-        required: false
-      APPLE_NOTARIZE_APPLE_ID:
-        description: Apple ID used for notarizing macOS builds
-        required: false
-      APPLE_NOTARIZE_TEAM_ID:
-        description: Team ID used for notarizing macOS builds
-        required: false
-      APPLE_NOTARIZE_PASSWORD:
-        description: Password used for notarizing macOS builds
-        required: false
-      CACHIX_AUTH_TOKEN:
-        description: Private token for authenticating against Cachix cache
         required: false
       GPG_PRIVATE_KEY:
         description: Private key for AppImage signing
@@ -100,27 +79,9 @@ jobs:
             nscurl_tag: "v24.9.26.122"
             nscurl_sha256: "AEE6C4BE3CB6455858E9C1EE4B3AFE0DB9960FA03FE99CCDEDC28390D57CCBB0"
 
-          - os: macos-14
-            name: macOS
-            macosx_deployment_target: 11.0
-            qt_ver: 6
-            qt_host: mac
-            qt_arch: ""
-            qt_version: "6.7.3"
-            qt_modules: "qt5compat qtimageformats qtnetworkauth"
-
-          - os: macos-14
-            name: macOS-Legacy
-            macosx_deployment_target: 10.13
-            qt_ver: 5
-            qt_host: mac
-            qt_version: "5.15.2"
-            qt_modules: "qtnetworkauth"
-
     runs-on: ${{ matrix.os }}
 
     env:
-      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macosx_deployment_target }}
       INSTALL_DIR: "install"
       INSTALL_PORTABLE_DIR: "install-portable"
       INSTALL_APPIMAGE_DIR: "install-appdir"
@@ -208,11 +169,10 @@ jobs:
           sudo apt-get -y update
           sudo apt-get -y install ninja-build extra-cmake-modules scdoc appstream libxcb-cursor-dev
 
-      - name: Install Dependencies (macOS)
-        if: runner.os == 'macOS'
+      - name: Install Qt (Linux)
+        if: runner.os == 'Linux' && matrix.qt_ver != 6
         run: |
-          brew update
-          brew install ninja extra-cmake-modules
+          sudo apt-get -y install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libqt5core5a libqt5network5 libqt5gui5
 
       - name: Install host Qt (Windows MSVC arm64)
         if: runner.os == 'Windows' && matrix.architecture == 'arm64'
@@ -230,8 +190,8 @@ jobs:
           dir: ${{ github.workspace }}\HostQt
           set-env: false
 
-      - name: Install Qt (macOS, Linux & Windows MSVC)
-        if: matrix.msystem == ''
+      - name: Install Qt (Linux, Qt 6 & Windows MSVC)
+        if: runner.os == 'Linux' && matrix.qt_ver == 6 || (runner.os == 'Windows' && matrix.msystem == '')
         uses: jurplel/install-qt-action@v3
         with:
           aqtversion: "==3.1.*"
@@ -275,16 +235,6 @@ jobs:
       ##
       # CONFIGURE
       ##
-
-      - name: Configure CMake (macOS)
-        if: runner.os == 'macOS' && matrix.qt_ver == 6
-        run: |
-          cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -DENABLE_LTO=ON -DLauncher_ENABLE_JAVA_DOWNLOADER=ON -DLauncher_BUILD_PLATFORM=official -DCMAKE_C_COMPILER_LAUNCHER=${{ env.CCACHE_VAR }} -DCMAKE_CXX_COMPILER_LAUNCHER=${{ env.CCACHE_VAR }} -DLauncher_QT_VERSION_MAJOR=${{ matrix.qt_ver }} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -G Ninja
-
-      - name: Configure CMake (macOS-Legacy)
-        if: runner.os == 'macOS' && matrix.qt_ver == 5
-        run: |
-          cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -DENABLE_LTO=ON -DLauncher_ENABLE_JAVA_DOWNLOADER=ON -DLauncher_BUILD_PLATFORM=official -DCMAKE_C_COMPILER_LAUNCHER=${{ env.CCACHE_VAR }} -DCMAKE_CXX_COMPILER_LAUNCHER=${{ env.CCACHE_VAR }} -DLauncher_QT_VERSION_MAJOR=${{ matrix.qt_ver }} -DMACOSX_SPARKLE_UPDATE_PUBLIC_KEY="" -DMACOSX_SPARKLE_UPDATE_FEED_URL="" -DCMAKE_OSX_ARCHITECTURES="x86_64" -G Ninja
 
       - name: Configure CMake (Windows MinGW-w64)
         if: runner.os == 'Windows' && matrix.msystem != ''
@@ -355,74 +305,6 @@ jobs:
       ##
       # PACKAGE BUILDS
       ##
-
-      - name: Fetch codesign certificate (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          echo '${{ secrets.APPLE_CODESIGN_CERT }}' | base64 --decode > codesign.p12
-          if [ -n '${{ secrets.APPLE_CODESIGN_ID }}' ]; then
-            security create-keychain -p '${{ secrets.APPLE_CODESIGN_PASSWORD }}' build.keychain
-            security default-keychain -s build.keychain
-            security unlock-keychain -p '${{ secrets.APPLE_CODESIGN_PASSWORD }}' build.keychain
-            security import codesign.p12 -k build.keychain -P '${{ secrets.APPLE_CODESIGN_PASSWORD }}' -T /usr/bin/codesign
-            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k '${{ secrets.APPLE_CODESIGN_PASSWORD }}' build.keychain
-          else
-            echo ":warning: Using ad-hoc code signing for macOS, as certificate was not present." >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: Package (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          cmake --install ${{ env.BUILD_DIR }}
-
-          cd ${{ env.INSTALL_DIR }}
-          chmod +x "FjordLauncher.app/Contents/MacOS/fjordlauncher"
-
-          if [ -n '${{ secrets.APPLE_CODESIGN_ID }}' ]; then
-            APPLE_CODESIGN_ID='${{ secrets.APPLE_CODESIGN_ID }}'
-          else
-            APPLE_CODESIGN_ID='-'
-          fi
-
-          sudo codesign --sign "$APPLE_CODESIGN_ID" --deep --force --entitlements "../program_info/App.entitlements" --options runtime "FjordLauncher.app/Contents/MacOS/fjordlauncher"
-          mv "FjordLauncher.app" "Fjord Launcher.app"
-
-      - name: Notarize (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          cd ${{ env.INSTALL_DIR }}
-
-          if [ -n '${{ secrets.APPLE_NOTARIZE_PASSWORD }}' ]; then
-            ditto -c -k --sequesterRsrc --keepParent "Fjord Launcher.app" ../FjordLauncher.zip
-            xcrun notarytool submit ../FjordLauncher.zip \
-              --wait --progress \
-              --apple-id '${{ secrets.APPLE_NOTARIZE_APPLE_ID }}' \
-              --team-id '${{ secrets.APPLE_NOTARIZE_TEAM_ID }}' \
-              --password '${{ secrets.APPLE_NOTARIZE_PASSWORD }}'
-
-            xcrun stapler staple "Fjord Launcher.app"
-          else
-            echo ":warning: Skipping notarization as credentials are not present." >> $GITHUB_STEP_SUMMARY
-          fi
-          ditto -c -k --sequesterRsrc --keepParent "Fjord Launcher.app" ../FjordLauncher.zip
-
-      - name: Make Sparkle signature (macOS)
-        if: matrix.name == 'macOS'
-        run: |
-          if [ '${{ secrets.SPARKLE_ED25519_KEY }}' != '' ]; then
-            echo '${{ secrets.SPARKLE_ED25519_KEY }}' > ed25519-priv.pem
-            signature=$(/opt/homebrew/opt/openssl@3/bin/openssl pkeyutl -sign -rawin -in ${{ github.workspace }}/FjordLauncher.zip -inkey ed25519-priv.pem | openssl base64 | tr -d \\n)
-            rm ed25519-priv.pem
-            cat >> $GITHUB_STEP_SUMMARY << EOF
-          ### Artifact Information :information_source:
-          - :memo: Sparkle Signature (ed25519): \`$signature\`
-          EOF
-          else
-            cat >> $GITHUB_STEP_SUMMARY << EOF
-          ### Artifact Information :information_source:
-          - :warning: Sparkle Signature (ed25519): No private key available (likely a pull request or fork)
-          EOF
-          fi
 
       - name: Package (Windows MinGW-w64)
         if: runner.os == 'Windows' && matrix.msystem != ''
@@ -567,13 +449,6 @@ jobs:
       ##
       # UPLOAD BUILDS
       ##
-
-      - name: Upload binary tarball (macOS)
-        if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v4
-        with:
-          name: FjordLauncher-${{ matrix.name }}-${{ env.VERSION }}-${{ inputs.build_type }}
-          path: FjordLauncher.zip
 
       - name: Upload binary zip (Windows)
         if: runner.os == 'Windows'

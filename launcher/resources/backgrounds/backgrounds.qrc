@@ -1,11 +1,11 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-    <qresource prefix="/backgrounds">
+	<qresource prefix="/backgrounds">
 		<!-- wlodek -->
 		<file alias="wlod">wlod.png</file>
-        <file alias="wlod-xmas">wlod-xmas.png</file>
-        <file alias="wlod-bday">wlod-bday.png</file>
-        <file alias="wlod-spooky">wlod-spooky.png</file>
+		<file alias="wlod-xmas">wlod-xmas.png</file>
+		<file alias="wlod-bday">wlod-bday.png</file>
+		<file alias="wlod-spooky">wlod-spooky.png</file>
 		<!-- piwo -->
 		<file alias="piwo">piwo.png</file>
 		<file alias="piwo-xmas">piwo.png</file>
@@ -16,5 +16,5 @@
 		<file alias="wino-xmas">wino.png</file>
 		<file alias="wino-bday">wino.png</file>
 		<file alias="wino-spooky">wino.png</file>
-    </qresource>
+	</qresource>
 </RCC>
