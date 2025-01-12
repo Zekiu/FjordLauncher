@@ -40,7 +40,6 @@ jobs:
         run: |
           mv ${{ github.workspace }}/FjordLauncher-source FjordLauncher-${{ env.VERSION }}
           mv FjordLauncher-Linux-Qt6-Portable*/FjordLauncher-portable.tar.gz FjordLauncher-Linux-Qt6-Portable-${{ env.VERSION }}.tar.gz
-          mv FjordLauncher-Linux-Qt5-Portable*/FjordLauncher-portable.tar.gz FjordLauncher-Linux-Qt5-Portable-${{ env.VERSION }}.tar.gz
           mv FjordLauncher-*.AppImage/FjordLauncher-*.AppImage FjordLauncher-Linux-x86_64.AppImage
           mv FjordLauncher-*.AppImage.zsync/FjordLauncher-*.AppImage.zsync FjordLauncher-Linux-x86_64.AppImage.zsync
 
@@ -82,7 +81,6 @@ jobs:
           draft: true
           prerelease: false
           files: |
-            FjordLauncher-Linux-Qt5-Portable-${{ env.VERSION }}.tar.gz
             FjordLauncher-Linux-x86_64.AppImage
             FjordLauncher-Linux-x86_64.AppImage.zsync
             FjordLauncher-Linux-Qt6-Portable-${{ env.VERSION }}.tar.gz
