@@ -45,7 +45,6 @@
 #include <QDirIterator>
 #include <QFile>
 #include <QFileInfo>
-#include <QSaveFile>
 #include <QStandardPaths>
 #include <QStorageInfo>
 #include <QTextStream>
@@ -54,6 +53,7 @@
 #include <system_error>
 
 #include "DesktopServices.h"
+#include "PSaveFile.h"
 #include "StringUtils.h"
 
 #if defined Q_OS_WIN32
@@ -191,8 +191,8 @@ void ensureExists(const QDir& dir)
 void write(const QString& filename, const QByteArray& data)
 {
     ensureExists(QFileInfo(filename).dir());
-    QSaveFile file(filename);
-    if (!file.open(QSaveFile::WriteOnly)) {
+    PSaveFile file(filename);
+    if (!file.open(PSaveFile::WriteOnly)) {
         throw FileSystemException("Couldn't open " + filename + " for writing: " + file.errorString());
     }
     if (data.size() != file.write(data)) {
@@ -213,8 +213,8 @@ void appendSafe(const QString& filename, const QByteArray& data)
         buffer = QByteArray();
     }
     buffer.append(data);
-    QSaveFile file(filename);
-    if (!file.open(QSaveFile::WriteOnly)) {
+    PSaveFile file(filename);
+    if (!file.open(PSaveFile::WriteOnly)) {
         throw FileSystemException("Couldn't open " + filename + " for writing: " + file.errorString());
     }
     if (buffer.size() != file.write(buffer)) {
@@ -276,6 +276,9 @@ bool ensureFolderPathExists(const QFileInfo folderPath)
 {
     QDir dir;
     QString ensuredPath = folderPath.filePath();
+    if (folderPath.exists())
+        return true;
+
     bool success = dir.mkpath(ensuredPath);
     return success;
 }
@@ -647,6 +650,19 @@ void ExternalLinkFileProcess::runLinkFile()
     qDebug() << "Process exited";
 }
 
+bool moveByCopy(const QString& source, const QString& dest)
+{
+    if (!copy(source, dest)()) {  // copy
+        qDebug() << "Copy of" << source << "to" << dest << "failed!";
+        return false;
+    }
+    if (!deletePath(source)) {  // remove original
+        qDebug() << "Deletion of" << source << "failed!";
+        return false;
+    };
+    return true;
+}
+
 bool move(const QString& source, const QString& dest)
 {
     std::error_code err;
@@ -654,13 +670,14 @@ bool move(const QString& source, const QString& dest)
     ensureFilePathExists(dest);
     fs::rename(StringUtils::toStdString(source), StringUtils::toStdString(dest), err);
 
-    if (err) {
-        qWarning() << "Failed to move file:" << QString::fromStdString(err.message());
-        qDebug() << "Source file:" << source;
-        qDebug() << "Destination file:" << dest;
+    if (err.value() != 0) {
+        if (moveByCopy(source, dest))
+            return true;
+        qDebug() << "Move of" << source << "to" << dest << "failed!";
+        qWarning() << "Failed to move file:" << QString::fromStdString(err.message()) << QString::number(err.value());
+        return false;
     }
-
-    return err.value() == 0;
+    return true;
 }
 
 bool deletePath(QString path)
@@ -904,6 +921,10 @@ bool createShortcut(QString destination, QString target, QStringList args, QStri
     if (destination.isEmpty()) {
         destination = PathCombine(getDesktopDir(), RemoveInvalidFilenameChars(name));
     }
+    if (!ensureFilePathExists(destination)) {
+        qWarning() << "Destination path can't be created!";
+        return false;
+    }
 #if defined(Q_OS_MACOS)
     // Create the Application
     QDir applicationDirectory =
@@ -950,8 +971,7 @@ bool createShortcut(QString destination, QString target, QStringList args, QStri
     if (!args.empty())
         argstring = " \"" + args.join("\" \"") + "\"";
 
-    stream << "#!/bin/bash"
-           << "\n";
+    stream << "#!/bin/bash" << "\n";
     stream << "\"" << target << "\" " << argstring << "\n";
 
     stream.flush();
@@ -995,12 +1015,9 @@ bool createShortcut(QString destination, QString target, QStringList args, QStri
     if (!args.empty())
         argstring = " '" + args.join("' '") + "'";
 
-    stream << "[Desktop Entry]"
-           << "\n";
-    stream << "Type=Application"
-           << "\n";
-    stream << "Categories=Game;ActionGame;AdventureGame;Simulation"
-           << "\n";
+    stream << "[Desktop Entry]" << "\n";
+    stream << "Type=Application" << "\n";
+    stream << "Categories=Game;ActionGame;AdventureGame;Simulation" << "\n";
     stream << "Exec=\"" << target.toLocal8Bit() << "\"" << argstring.toLocal8Bit() << "\n";
     stream << "Name=" << name.toLocal8Bit() << "\n";
     if (!icon.isEmpty()) {
@@ -1677,4 +1694,30 @@ QString getPathNameInLocal8bit(const QString& file)
 }
 #endif
 
+QString getUniqueResourceName(const QString& filePath)
+{
+    auto newFileName = filePath;
+    if (!newFileName.endsWith(".disabled")) {
+        return newFileName;  // prioritize enabled mods
+    }
+    newFileName.chop(9);
+    if (!QFile::exists(newFileName)) {
+        return filePath;
+    }
+    QFileInfo fileInfo(filePath);
+    auto baseName = fileInfo.completeBaseName();
+    auto path = fileInfo.absolutePath();
+
+    int counter = 1;
+    do {
+        if (counter == 1) {
+            newFileName = FS::PathCombine(path, baseName + ".duplicate");
+        } else {
+            newFileName = FS::PathCombine(path, baseName + ".duplicate" + QString::number(counter));
+        }
+        counter++;
+    } while (QFile::exists(newFileName));
+
+    return newFileName;
+}
 }  // namespace FS

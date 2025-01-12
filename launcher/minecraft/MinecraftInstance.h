@@ -38,12 +38,9 @@
 #include <java/JavaVersion.h>
 #include <QDir>
 #include <QProcess>
-#include <unordered_set>
 #include "BaseInstance.h"
-#include "minecraft/launch/MinecraftServerTarget.h"
+#include "minecraft/launch/MinecraftTarget.h"
 #include "minecraft/mod/Mod.h"
-
-const std::unordered_set<std::string> MANAGED_AGENTS = { "moe.yushi:authlibinjector" };
 
 class ModFolderModel;
 class ResourceFolderModel;
@@ -59,7 +56,7 @@ class MinecraftInstance : public BaseInstance {
     Q_OBJECT
    public:
     MinecraftInstance(SettingsObjectPtr globalSettings, SettingsObjectPtr settings, const QString& rootDir);
-    virtual ~MinecraftInstance(){};
+    virtual ~MinecraftInstance() = default;
     virtual void saveNow() override;
 
     void loadSpecificSettings() override;
@@ -107,7 +104,7 @@ class MinecraftInstance : public BaseInstance {
     /** Returns whether the instance, with its version, has support for demo mode. */
     [[nodiscard]] bool supportsDemo() const;
 
-    void updateRuntimeContext();
+    void updateRuntimeContext() override;
 
     //////  Profile management //////
     std::shared_ptr<PackProfile> getPackProfile() const;
@@ -123,12 +120,12 @@ class MinecraftInstance : public BaseInstance {
     std::shared_ptr<GameOptions> gameOptionsModel();
 
     //////  Launch stuff //////
-    Task::Ptr createUpdateTask(Net::Mode mode) override;
-    shared_qobject_ptr<LaunchTask> createLaunchTask(AuthSessionPtr account, MinecraftServerTargetPtr serverToJoin) override;
+    QList<Task::Ptr> createUpdateTask() override;
+    shared_qobject_ptr<LaunchTask> createLaunchTask(AuthSessionPtr account, MinecraftTarget::Ptr targetToJoin) override;
     QStringList extraArguments() override;
-    QStringList verboseDescription(AuthSessionPtr session, MinecraftServerTargetPtr serverToJoin) override;
+    QStringList verboseDescription(AuthSessionPtr session, MinecraftTarget::Ptr targetToJoin) override;
     QList<Mod*> getJarMods() const;
-    QString createLaunchScript(AuthSessionPtr session, MinecraftServerTargetPtr serverToJoin);
+    QString createLaunchScript(AuthSessionPtr session, MinecraftTarget::Ptr targetToJoin);
     /// get arguments passed to java
     QStringList javaArguments();
     QString getLauncher();
@@ -160,7 +157,7 @@ class MinecraftInstance : public BaseInstance {
     virtual QStringList processAuthArgs(AuthSessionPtr account) const;
 
     // FIXME: remove
-    virtual QStringList processMinecraftArgs(AuthSessionPtr account, MinecraftServerTargetPtr serverToJoin) const;
+    virtual QStringList processMinecraftArgs(AuthSessionPtr account, MinecraftTarget::Ptr targetToJoin) const;
 
     virtual JavaVersion getJavaVersion();
 
