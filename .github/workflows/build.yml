@@ -35,13 +35,6 @@ jobs:
       matrix:
         include:
           - os: ubuntu-20.04
-            qt_ver: 5
-            qt_host: linux
-            qt_arch: ""
-            qt_version: "5.15.2"
-            qt_modules: "qtnetworkauth"
-
-          - os: ubuntu-20.04
             qt_ver: 6
             qt_host: linux
             qt_arch: ""
@@ -168,11 +161,6 @@ jobs:
         run: |
           sudo apt-get -y update
           sudo apt-get -y install ninja-build extra-cmake-modules scdoc appstream libxcb-cursor-dev
-
-      - name: Install Qt (Linux)
-        if: runner.os == 'Linux' && matrix.qt_ver != 6
-        run: |
-          sudo apt-get -y install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libqt5core5a libqt5network5 libqt5gui5
 
       - name: Install host Qt (Windows MSVC arm64)
         if: runner.os == 'Windows' && matrix.architecture == 'arm64'
@@ -471,13 +459,6 @@ jobs:
           name: FjordLauncher-${{ matrix.name }}-Setup-${{ env.VERSION }}-${{ inputs.build_type }}
           path: FjordLauncher-Setup.exe
 
-      - name: Upload binary tarball (Linux, portable, Qt 5)
-        if: runner.os == 'Linux' && matrix.qt_ver != 6
-        uses: actions/upload-artifact@v4
-        with:
-          name: FjordLauncher-${{ runner.os }}-Qt5-Portable-${{ env.VERSION }}-${{ inputs.build_type }}
-          path: FjordLauncher-portable.tar.gz
-
       - name: Upload binary tarball (Linux, portable, Qt 6)
         if: runner.os == 'Linux' && matrix.qt_ver != 5
         uses: actions/upload-artifact@v4
@@ -527,53 +508,3 @@ jobs:
         with:
           bundle: FjordLauncher-${{ runner.os }}-${{ env.VERSION }}-Flatpak.flatpak
           manifest-path: flatpak/org.unmojang.FjordLauncher.yml
-
-  nix:
-    name: Nix (${{ matrix.system }})
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-22.04
-            system: x86_64-linux
-
-          - os: macos-13
-            system: x86_64-darwin
-
-          - os: macos-14
-            system: aarch64-darwin
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@v30
-
-        # For PRs
-      - name: Setup Nix Magic Cache
-        uses: DeterminateSystems/magic-nix-cache-action@v8
-
-        # For in-tree builds
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: unmojang
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Run flake checks
-        run: |
-          nix flake check --print-build-logs --show-trace
-
-      - name: Build debug package
-        if: ${{ inputs.build_type == 'Debug' }}
-        run: |
-          nix build --print-build-logs .#fjordlauncher-debug
-
-      - name: Build release package
-        if: ${{ inputs.build_type != 'Debug' }}
-        run: |
-          nix build --print-build-logs .#fjordlauncher
