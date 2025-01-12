@@ -141,19 +141,6 @@ void AccountListPage::showLegalNotice()
                             "but its developers do not condone the violation of any law. "));
 }
 
-void AccountListPage::on_actionAddMojang_triggered()
-{
-    MinecraftAccountPtr account =
-        LoginDialog::newAccount(this, tr("Please enter your Mojang account email and password to add your account."));
-
-    if (account) {
-        m_accounts->addAccount(account);
-        if (m_accounts->count() == 1) {
-            m_accounts->setDefaultAccount(account);
-        }
-    }
-}
-
 void AccountListPage::on_actionAddAuthlibInjector_triggered()
 {
     if (m_accounts->count() == 0) {
