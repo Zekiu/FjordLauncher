@@ -295,7 +295,11 @@ void ThemeManager::initializeCatPacks()
 {
     QList<std::pair<QString, QString>> defaultCats{ { "wlod", QObject::tr("Włodzimierz the Cat (kot selnov)") },
                                                     { "piwo", QObject::tr("Piwo Piwo Piwo Piwo") },
-                                                    { "wino", QObject::tr("Wino kot") } };
+                                                    { "wino", QObject::tr("Wino kot") },
+                                                    { "skolim", QObject::tr("Skolim Latino") },
+                                                    { "dzastin1", QObject::tr("Dżastin RIP 😭") },
+                                                    { "dzastin2", QObject::tr("Dżastin RIP 😭😭") },
+                                                    { "dzastin3", QObject::tr("Dżastin RIP 😭😭😭") } };
     for (auto [id, name] : defaultCats) {
         addCatPack(std::unique_ptr<CatPack>(new BasicCatPack(id, name)));
     }

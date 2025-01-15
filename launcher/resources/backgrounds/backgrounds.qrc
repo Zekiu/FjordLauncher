@@ -16,5 +16,25 @@
 		<file alias="wino-xmas">wino.png</file>
 		<file alias="wino-bday">wino.png</file>
 		<file alias="wino-spooky">wino.png</file>
+		<!-- skolim -->
+		<file alias="skolim">skolim.png</file>
+		<file alias="skolim-xmas">skolim.png</file>
+		<file alias="skolim-bday">skolim.png</file>
+		<file alias="skolim-spooky">skolim.png</file>
+		<!-- dzastin1 -->
+		<file alias="dzastin1">dzastin1.png</file>
+		<file alias="dzastin1-xmas">dzastin1.png</file>
+		<file alias="dzastin1-bday">dzastin1.png</file>
+		<file alias="dzastin1-spooky">dzastin1.png</file>
+		<!-- dzastin2 -->
+		<file alias="dzastin2">dzastin2.png</file>
+		<file alias="dzastin2-xmas">dzastin2.png</file>
+		<file alias="dzastin2-bday">dzastin2.png</file>
+		<file alias="dzastin2-spooky">dzastin2.png</file>
+		<!-- dzastin3 -->
+		<file alias="dzastin3">dzastin3.png</file>
+		<file alias="dzastin3-xmas">dzastin3.png</file>
+		<file alias="dzastin3-bday">dzastin3.png</file>
+		<file alias="dzastin3-spooky">dzastin3.png</file>
     </qresource>
 </RCC>

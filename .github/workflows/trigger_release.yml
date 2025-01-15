@@ -38,12 +38,12 @@ jobs:
           echo "VERSION=$tag_name" >> $GITHUB_ENV
       - name: Package artifacts properly
         run: |
-          mv ${{ github.workspace }}/FjordLauncher-source FjordLauncher-${{ env.VERSION }}
-          mv FjordLauncher-Linux-Qt6-Portable*/FjordLauncher-portable.tar.gz FjordLauncher-Linux-Qt6-Portable-${{ env.VERSION }}.tar.gz
+          mv ${{ github.workspace }}/FjordLauncher-source FjordLauncher
+          mv FjordLauncher-Linux-Qt6-Portable*/FjordLauncher-portable.tar.gz FjordLauncher-Linux-Qt6-Portable.tar.gz
           mv FjordLauncher-*.AppImage/FjordLauncher-*.AppImage FjordLauncher-Linux-x86_64.AppImage
           mv FjordLauncher-*.AppImage.zsync/FjordLauncher-*.AppImage.zsync FjordLauncher-Linux-x86_64.AppImage.zsync
 
-          tar --exclude='.git' -czf FjordLauncher-${{ env.VERSION }}.tar.gz FjordLauncher-${{ env.VERSION }}
+          tar --exclude='.git' -czf FjordLauncher.tar.gz FjordLauncher
 
           for d in FjordLauncher-Windows-MSVC*; do
             cd "${d}" || continue
@@ -55,8 +55,8 @@ jobs:
             test -z "${LEGACY}" || NAME="${NAME}-Legacy"
             test -z "${ARM64}" || NAME="${NAME}-arm64"
             test -z "${PORT}" || NAME="${NAME}-Portable"
-            test -z "${INST}" || mv FjordLauncher-*.exe ../${NAME}-Setup-${{ env.VERSION }}.exe
-            test -n "${INST}" || zip -r -9 "../${NAME}-${{ env.VERSION }}.zip" *
+            test -z "${INST}" || mv FjordLauncher-*.exe ../${NAME}-Setup.exe
+            test -n "${INST}" || zip -r -9 "../${NAME}.zip" *
             cd ..
           done
 
@@ -66,8 +66,8 @@ jobs:
             PORT="$(echo -n ${d} | grep -o Portable || true)"
             NAME="FjordLauncher-Windows-MinGW-w64"
             test -z "${PORT}" || NAME="${NAME}-Portable"
-            test -z "${INST}" || mv FjordLauncher-*.exe ../${NAME}-Setup-${{ env.VERSION }}.exe
-            test -n "${INST}" || zip -r -9 "../${NAME}-${{ env.VERSION }}.zip" *
+            test -z "${INST}" || mv FjordLauncher-*.exe ../${NAME}-Setup.exe
+            test -n "${INST}" || zip -r -9 "../${NAME}.zip" *
             cd ..
           done
 
@@ -83,14 +83,14 @@ jobs:
           files: |
             FjordLauncher-Linux-x86_64.AppImage
             FjordLauncher-Linux-x86_64.AppImage.zsync
-            FjordLauncher-Linux-Qt6-Portable-${{ env.VERSION }}.tar.gz
-            FjordLauncher-Windows-MinGW-w64-${{ env.VERSION }}.zip
-            FjordLauncher-Windows-MinGW-w64-Portable-${{ env.VERSION }}.zip
-            FjordLauncher-Windows-MinGW-w64-Setup-${{ env.VERSION }}.exe
-            FjordLauncher-Windows-MSVC-arm64-${{ env.VERSION }}.zip
-            FjordLauncher-Windows-MSVC-arm64-Portable-${{ env.VERSION }}.zip
-            FjordLauncher-Windows-MSVC-arm64-Setup-${{ env.VERSION }}.exe
-            FjordLauncher-Windows-MSVC-${{ env.VERSION }}.zip
-            FjordLauncher-Windows-MSVC-Portable-${{ env.VERSION }}.zip
-            FjordLauncher-Windows-MSVC-Setup-${{ env.VERSION }}.exe
-            FjordLauncher-${{ env.VERSION }}.tar.gz
+            FjordLauncher-Linux-Qt6-Portable.tar.gz
+            FjordLauncher-Windows-MinGW-w64.zip
+            FjordLauncher-Windows-MinGW-w64-Portable.zip
+            FjordLauncher-Windows-MinGW-w64-Setup.exe
+            FjordLauncher-Windows-MSVC-arm64.zip
+            FjordLauncher-Windows-MSVC-arm64-Portable.zip
+            FjordLauncher-Windows-MSVC-arm64-Setup.exe
+            FjordLauncher-Windows-MSVC.zip
+            FjordLauncher-Windows-MSVC-Portable.zip
+            FjordLauncher-Windows-MSVC-Setup.exe
+            FjordLauncher.tar.gz
