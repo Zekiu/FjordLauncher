@@ -293,12 +293,34 @@ QString ThemeManager::addCatPack(std::unique_ptr<CatPack> catPack)
 
 void ThemeManager::initializeCatPacks()
 {
-    QList<std::pair<QString, QString>> defaultCats{ { "kitteh", QObject::tr("Background Cat (from MultiMC)") },
-                                                    { "rory", QObject::tr("Rory ID 11 (drawn by Ashtaka)") },
-                                                    { "rory-flat", QObject::tr("Rory ID 11 (flat edition, drawn by Ashtaka)") },
-                                                    { "teawie", QObject::tr("Teawie (drawn by SympathyTea)") },
-                                                    { "polly", QObject::tr("Polly the Parrot (drawn by anoraktrend)") },
-                                                    { "spaceship-phoebe", QObject::tr("Spaceship and Phoebe (drawn by Evan)") } };
+    QList<std::pair<QString, QString>> defaultCats{ { "wlod", QObject::tr("Włodzimierz the Cat (kot selnov)") },
+                                                    { "wlod_kciuk", QObject::tr("Włodzimierz the Cat (kot selnov) (kciuk)") },
+                                                    { "wlod_kurczak", QObject::tr("Włodzimierz the Cat (kot selnov) (co on taki kurczak)") },
+                                                    { "skolim", QObject::tr("Skolim Latino") },
+                                                    { "dzastin1", QObject::tr("Dżastin RIP 😭") },
+                                                    { "dzastin2", QObject::tr("Dżastin RIP 😭😭") },
+                                                    { "dzastin3", QObject::tr("Dżastin RIP 😭😭😭") },
+                                                    { "caro", QObject::tr("Czaro Dolars") },
+                                                    { "caro2", QObject::tr("Czaro Dolars 2") },
+                                                    { "piwo", QObject::tr("Piwo Piwo Piwo Piwo") },
+                                                    { "wino", QObject::tr("Wino kot") },
+                                                    { "miska", QObject::tr("Dżafej i Henirk, Dżafej w misce") },
+                                                    { "dywan", QObject::tr("Starucha i Henirk na dywanie") },
+                                                    { "dzafej", QObject::tr("Dżafej") },
+                                                    { "dzafej2", QObject::tr("Dżafej 2") },
+                                                    { "dzafej3", QObject::tr("Dżafej 3") },
+                                                    { "henirk", QObject::tr("Henirk") },
+                                                    { "koka", QObject::tr("Nikita (koka)") },
+                                                    { "koka2", QObject::tr("Nikita (koka) 2") },
+                                                    { "koka3", QObject::tr("Nikita (koka) 3") },
+                                                    { "mali_rudzi", QObject::tr("Dżastin i Henirk") },
+                                                    { "przemo", QObject::tr("Przemek") },
+                                                    { "rodzenstwo", QObject::tr("Dżafej i Henirk") },
+                                                    { "rodzenstwo2", QObject::tr("Dżafej i Henirk 2") },
+                                                    { "rodzina", QObject::tr("Włodek, Czaro, Dżafej, Henirk i Starucha") },
+                                                    { "starucha", QObject::tr("Starucha") },
+                                                    { "starucha2", QObject::tr("Starucha 2") },
+                                                    { "starucha3", QObject::tr("Starucha 3") } };
     for (auto [id, name] : defaultCats) {
         addCatPack(std::unique_ptr<CatPack>(new BasicCatPack(id, name)));
     }
