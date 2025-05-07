@@ -6,7 +6,7 @@ on:
       build_type:
         description: Type of build (Debug, Release, RelWithDebInfo, MinSizeRel)
         type: string
-        default: Debug
+        default: Release
       is_qt_cached:
         description: Enable Qt caching or not
         type: string
