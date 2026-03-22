@@ -1,37 +1,145 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-    <qresource prefix="/backgrounds">
-        <file alias="kitteh">kitteh.png</file>
-        <file alias="kitteh-xmas">kitteh-xmas.png</file>
-        <file alias="kitteh-bday">kitteh-bday.png</file>
-        <file alias="kitteh-spooky">kitteh-spooky.png</file>
-        <file alias="rory">rory.png</file>
-        <file alias="rory-xmas">rory-xmas.png</file>
-        <file alias="rory-bday">rory-bday.png</file>
-        <file alias="rory-spooky">rory-spooky.png</file>
-        <file alias="rory-flat">rory-flat.png</file>
-        <file alias="rory-flat-xmas">rory-flat-xmas.png</file>
-        <file alias="rory-flat-bday">rory-flat-bday.png</file>
-        <file alias="rory-flat-spooky">rory-flat-spooky.png</file>
-        <!-- teawie images -->
-        <!-- copyright (c) SympathyTea 2023 -->
-        <!-- these are licensed under the CC BY-SA 4.0 and have been unmodified aside from downscaling -->
-        <!-- the full license with appropriate notices is avalible at https://creativecommons.org/licenses/by-sa/4.0/ -->
-        <file alias="teawie">teawie.png</file>
-        <!-- https://commons.wikimedia.org/wiki/File:Teawie.png -->
-        <file alias="teawie-xmas">teawie-xmas.png</file>
-        <!-- https://commons.wikimedia.org/wiki/File:Teawie_Holiday.png -->
-        <file alias="teawie-bday">teawie-bday.png</file>
-        <!-- https://commons.wikimedia.org/wiki/File:Teawie_Party.png -->
-        <file alias="teawie-spooky">teawie-spooky.png</file>
-        <!-- https://commons.wikimedia.org/wiki/File:Teawie_Halloween.png -->
-        <file alias="polly">polly.png</file>
-        <file alias="polly-xmas">polly-xmas.png</file>
-        <file alias="polly-bday">polly-bday.png</file>
-        <file alias="polly-spooky">polly.png</file>
-        <file alias="spaceship-phoebe">spaceship-phoebe.png</file>
-        <file alias="spaceship-phoebe-xmas">spaceship-phoebe-xmas.png</file>
-        <file alias="spaceship-phoebe-bday">spaceship-phoebe-bday.png</file>
-        <file alias="spaceship-phoebe-spooky">spaceship-phoebe-spooky.png</file>
+	<qresource prefix="/backgrounds">
+		<!-- wlod -->
+		<file alias="wlod">wlod.png</file>
+		<file alias="wlod-xmas">wlod-xmas.png</file>
+		<file alias="wlod-bday">wlod-bday.png</file>
+		<file alias="wlod-spooky">wlod-spooky.png</file>
+		<!-- wlod_kciuk -->
+		<file alias="wlod_kciuk">wlod_kciuk.png</file>
+		<file alias="wlod_kciuk-xmas">wlod_kciuk.png</file>
+		<file alias="wlod_kciuk-bday">wlod_kciuk.png</file>
+		<file alias="wlod_kciuk-spooky">wlod_kciuk.png</file>
+		<!-- wlod_kurczak -->
+		<file alias="wlod_kurczak">wlod_kurczak.png</file>
+		<file alias="wlod_kurczak-xmas">wlod_kurczak.png</file>
+		<file alias="wlod_kurczak-bday">wlod_kurczak.png</file>
+		<file alias="wlod_kurczak-spooky">wlod_kurczak.png</file>
+		<!-- skolim -->
+		<file alias="skolim">skolim.png</file>
+		<file alias="skolim-xmas">skolim-xmas.png</file>
+		<file alias="skolim-bday">skolim-bday.png</file>
+		<file alias="skolim-spooky">skolim.png</file>
+		<!-- dzastin1 -->
+		<file alias="dzastin1">dzastin1.png</file>
+		<file alias="dzastin1-xmas">dzastin1.png</file>
+		<file alias="dzastin1-bday">dzastin1.png</file>
+		<file alias="dzastin1-spooky">dzastin1.png</file>
+		<!-- dzastin2 -->
+		<file alias="dzastin2">dzastin2.png</file>
+		<file alias="dzastin2-xmas">dzastin2.png</file>
+		<file alias="dzastin2-bday">dzastin2.png</file>
+		<file alias="dzastin2-spooky">dzastin2.png</file>
+		<!-- dzastin3 -->
+		<file alias="dzastin3">dzastin3.png</file>
+		<file alias="dzastin3-xmas">dzastin3.png</file>
+		<file alias="dzastin3-bday">dzastin3.png</file>
+		<file alias="dzastin3-spooky">dzastin3.png</file>
+		<!-- caro -->
+		<file alias="caro">caro.png</file>
+		<file alias="caro-xmas">caro-xmas.png</file>
+		<file alias="caro-bday">caro-bday.png</file>
+		<file alias="caro-spooky">caro.png</file>
+		<!-- caro2 -->
+		<file alias="caro2">caro2.png</file>
+		<file alias="caro2-xmas">caro2.png</file>
+		<file alias="caro2-bday">caro2.png</file>
+		<file alias="caro2-spooky">caro2.png</file>
+		<!-- piwo -->
+		<file alias="piwo">piwo.png</file>
+		<file alias="piwo-xmas">piwo.png</file>
+		<file alias="piwo-bday">piwo.png</file>
+		<file alias="piwo-spooky">piwo.png</file>
+		<!-- wino -->
+		<file alias="wino">wino.png</file>
+		<file alias="wino-xmas">wino.png</file>
+		<file alias="wino-bday">wino.png</file>
+		<file alias="wino-spooky">wino.png</file>
+		<!-- miska -->
+		<file alias="miska">miska.png</file>
+		<file alias="miska-xmas">miska.png</file>
+		<file alias="miska-bday">miska.png</file>
+		<file alias="miska-spooky">miska.png</file>
+		<!-- dywan -->
+		<file alias="dywan">dywan.png</file>
+		<file alias="dywan-xmas">dywan.png</file>
+		<file alias="dywan-bday">dywan.png</file>
+		<file alias="dywan-spooky">dywan.png</file>
+		<!-- dzafej -->
+		<file alias="dzafej">dzafej.png</file>
+		<file alias="dzafej-xmas">dzafej.png</file>
+		<file alias="dzafej-bday">dzafej.png</file>
+		<file alias="dzafej-spooky">dzafej.png</file>
+		<!-- dzafej2 -->
+		<file alias="dzafej2">dzafej2.png</file>
+		<file alias="dzafej2-xmas">dzafej2.png</file>
+		<file alias="dzafej2-bday">dzafej2.png</file>
+		<file alias="dzafej2-spooky">dzafej2.png</file>
+		<!-- dzafej3 -->
+		<file alias="dzafej3">dzafej3.png</file>
+		<file alias="dzafej3-xmas">dzafej3.png</file>
+		<file alias="dzafej3-bday">dzafej3.png</file>
+		<file alias="dzafej3-spooky">dzafej3.png</file>
+		<!-- henia -->
+		<file alias="henia">henia.png</file>
+		<file alias="henia-xmas">henia.png</file>
+		<file alias="henia-bday">henia.png</file>
+		<file alias="henia-spooky">henia.png</file>
+		<!-- koka -->
+		<file alias="koka">koka.png</file>
+		<file alias="koka-xmas">koka.png</file>
+		<file alias="koka-bday">koka.png</file>
+		<file alias="koka-spooky">koka.png</file>
+		<!-- koka2 -->
+		<file alias="koka2">koka2.png</file>
+		<file alias="koka2-xmas">koka2.png</file>
+		<file alias="koka2-bday">koka2.png</file>
+		<file alias="koka2-spooky">koka2.png</file>
+		<!-- koka3 -->
+		<file alias="koka3">koka3.png</file>
+		<file alias="koka3-xmas">koka3.png</file>
+		<file alias="koka3-bday">koka3.png</file>
+		<file alias="koka3-spooky">koka3.png</file>
+		<!-- mali_rudzi -->
+		<file alias="mali_rudzi">mali_rudzi.png</file>
+		<file alias="mali_rudzi-xmas">mali_rudzi.png</file>
+		<file alias="mali_rudzi-bday">mali_rudzi.png</file>
+		<file alias="mali_rudzi-spooky">mali_rudzi.png</file>
+		<!-- przemo -->
+		<file alias="przemo">przemo.png</file>
+		<file alias="przemo-xmas">przemo.png</file>
+		<file alias="przemo-bday">przemo.png</file>
+		<file alias="przemo-spooky">przemo.png</file>
+		<!-- rodzenstwo -->
+		<file alias="rodzenstwo">rodzenstwo.png</file>
+		<file alias="rodzenstwo-xmas">rodzenstwo.png</file>
+		<file alias="rodzenstwo-bday">rodzenstwo.png</file>
+		<file alias="rodzenstwo-spooky">rodzenstwo.png</file>
+		<!-- rodzenstwo2 -->
+		<file alias="rodzenstwo2">rodzenstwo2.png</file>
+		<file alias="rodzenstwo2-xmas">rodzenstwo2.png</file>
+		<file alias="rodzenstwo2-bday">rodzenstwo2.png</file>
+		<file alias="rodzenstwo2-spooky">rodzenstwo2.png</file>
+		<!-- rodzina -->
+		<file alias="rodzina">rodzina.png</file>
+		<file alias="rodzina-xmas">rodzina.png</file>
+		<file alias="rodzina-bday">rodzina.png</file>
+		<file alias="rodzina-spooky">rodzina.png</file>
+		<!-- starucha -->
+		<file alias="starucha">starucha.png</file>
+		<file alias="starucha-xmas">starucha.png</file>
+		<file alias="starucha-bday">starucha.png</file>
+		<file alias="starucha-spooky">starucha.png</file>
+		<!-- starucha2 -->
+		<file alias="starucha2">starucha2.png</file>
+		<file alias="starucha2-xmas">starucha2.png</file>
+		<file alias="starucha2-bday">starucha2.png</file>
+		<file alias="starucha2-spooky">starucha2.png</file>
+		<!-- starucha3 -->
+		<file alias="starucha3">starucha3.png</file>
+		<file alias="starucha3-xmas">starucha3.png</file>
+		<file alias="starucha3-bday">starucha3.png</file>
+		<file alias="starucha3-spooky">starucha3.png</file>
     </qresource>
 </RCC>

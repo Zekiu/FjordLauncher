@@ -145,16 +145,16 @@ void JavaWizardWidget::setupUi()
 
     m_autodetectJavaCheckBox = new QCheckBox(m_autoJavaGroupBox);
     m_autodetectJavaCheckBox->setObjectName("autodetectJavaCheckBox");
-    m_autodetectJavaCheckBox->setChecked(true);
+    m_autodetectJavaCheckBox->setChecked(false);
     m_veriticalJavaLayout->addWidget(m_autodetectJavaCheckBox);
 
     if (BuildConfig.JAVA_DOWNLOADER_ENABLED) {
         m_autodownloadCheckBox = new QCheckBox(m_autoJavaGroupBox);
         m_autodownloadCheckBox->setObjectName("autodownloadCheckBox");
-        m_autodownloadCheckBox->setEnabled(m_autodetectJavaCheckBox->isChecked());
+        m_autodownloadCheckBox->setEnabled(false);
         m_veriticalJavaLayout->addWidget(m_autodownloadCheckBox);
         connect(m_autodetectJavaCheckBox, &QCheckBox::stateChanged, this, [this] {
-            m_autodownloadCheckBox->setEnabled(m_autodetectJavaCheckBox->isChecked());
+            m_autodownloadCheckBox->setEnabled(false);
             if (!m_autodetectJavaCheckBox->isChecked())
                 m_autodownloadCheckBox->setChecked(false);
         });
@@ -199,7 +199,7 @@ void JavaWizardWidget::initialize()
     m_permGenSpinBox->setValue(observedPermGenMemory);
     updateThresholds();
     if (BuildConfig.JAVA_DOWNLOADER_ENABLED) {
-        m_autodownloadCheckBox->setChecked(true);
+        m_autodownloadCheckBox->setChecked(false);
     }
 }
 

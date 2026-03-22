@@ -132,22 +132,19 @@ void AccountListPage::listChanged()
 
 void AccountListPage::on_actionAddAuthlibInjector_triggered()
 {
-    if (!m_accounts->anyAccountIsValid()) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("You must add a Microsoft account that owns Minecraft before you can add an account on a custom "
-                                "authentication server."
-                                "<br><br>"
-                                "If you have lost your account you can contact Microsoft for support."));
-        return;
-    }
+    // if (!m_accounts->anyAccountIsValid()) {
+    //     QMessageBox::warning(this, tr("Error"),
+    //                          tr("You must add a Microsoft account that owns Minecraft before you can add an account on a custom "
+    //                             "authentication server."
+    //                             "<br><br>"
+    //                             "If you have lost your account you can contact Microsoft for support."));
+    //     return;
+    // }
 
     MinecraftAccountPtr account = AuthlibInjectorLoginDialog::newAccount(
-        this, tr("Please enter your username (sometimes an email address), password, and the URL of your API server."
+        this, tr("Wpisz swój login (może się różnić od twojego nicku, pamiętaj!) oraz hasło."
                  "<br>"
-                 "See <a href=\"https://github.com/unmojang/FjordLauncher/blob/develop/doc/alternative-auth-servers.md\">this page</a> in "
-                 "the Fjord Launcher repository for a list of common API servers."
-                 "<br><br>"
-                 "<b>Caution!</b> Your username and password will be sent to the authentication server you specify!"));
+                 "W trzecim polu wpisz <code>drasl.zekiu.xyz</code>, jeśli chcesz się zalogować na moją (Zekiu) instancję Drasl"));
 
     if (account) {
         m_accounts->addAccount(account);
@@ -170,13 +167,13 @@ void AccountListPage::on_actionAddMicrosoft_triggered()
 
 void AccountListPage::on_actionAddOffline_triggered()
 {
-    if (!m_accounts->anyAccountIsValid()) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("You must add a Microsoft account that owns Minecraft before you can add an offline account."
-                                "<br><br>"
-                                "If you have lost your account you can contact Microsoft for support."));
-        return;
-    }
+    // if (!m_accounts->anyAccountIsValid()) {
+    //     QMessageBox::warning(this, tr("Error"),
+    //                          tr("You must add a Microsoft account that owns Minecraft before you can add an offline account."
+    //                             "<br><br>"
+    //                             "If you have lost your account you can contact Microsoft for support."));
+    //     return;
+    // }
 
     ChooseOfflineNameDialog dialog(tr("Please enter your desired username to add your offline account."), this);
     if (dialog.exec() != QDialog::Accepted) {
