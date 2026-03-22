@@ -654,7 +654,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         // Theming
         m_settings->registerSetting("IconTheme", QString());
         m_settings->registerSetting("ApplicationTheme", QString());
-        m_settings->registerSetting("BackgroundCat", QString("spaceship-phoebe"));
+        m_settings->registerSetting("BackgroundCat", QString("wlod"));
 
         // Remembered state
         m_settings->registerSetting("LastUsedGroupForNewInstance", QString());
@@ -757,11 +757,11 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting("JavaVendor", "");
         m_settings->registerSetting("LastHostname", "");
         m_settings->registerSetting("JvmArgs", "");
-        m_settings->registerSetting("IgnoreJavaCompatibility", false);
+        m_settings->registerSetting("IgnoreJavaCompatibility", true);
         m_settings->registerSetting("IgnoreJavaWizard", false);
-        auto defaultEnableAutoJava = m_settings->get("JavaPath").toString().isEmpty();
-        m_settings->registerSetting("AutomaticJavaSwitch", defaultEnableAutoJava);
-        m_settings->registerSetting("AutomaticJavaDownload", defaultEnableAutoJava);
+        // auto defaultEnableAutoJava = m_settings->get("JavaPath").toString().isEmpty();
+        m_settings->registerSetting("AutomaticJavaSwitch", false);
+        m_settings->registerSetting("AutomaticJavaDownload", false);
         m_settings->registerSetting("UserAskedAboutAutomaticJavaDownload", false);
 
         // Native library workarounds
@@ -789,7 +789,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting("ShowModIncompat", false);
 
         // Missing Yggdrasil agent behavior
-        m_settings->registerSetting("MissingYggdrasilAgentBehavior", (int)MissingYggdrasilAgentBehavior::Ask);
+        m_settings->registerSetting("MissingYggdrasilAgentBehavior", (int)MissingYggdrasilAgentBehavior::Install);
 
         // Yggdrasil agent options
         m_settings->registerSetting("YggdrasilAgentAutoUpdate", false);
@@ -808,7 +808,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting({ "PostExitCommand", "PostExitCmd" }, "");
 
         // The cat
-        m_settings->registerSetting("TheCat", false);
+        m_settings->registerSetting("TheCat", true);
         m_settings->registerSetting("CatOpacity", 100);
         m_settings->registerSetting("CatFit", "fit");
 
@@ -1250,11 +1250,10 @@ bool Application::createSetupWizard()
     if (wizardRequired) {
         // set default theme after going into theme wizard
         if (!validIcons)
-            settings()->set("IconTheme", QString("pe_colored"));
+            settings()->set("IconTheme", QString("flat_white"));
         if (!validWidgets) {
 #if defined(Q_OS_WIN32) && QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
-            const QString style =
-                QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark ? QStringLiteral("dark") : QStringLiteral("bright");
+            const QString style = QStringLiteral("dark");
 #else
             const QString style = QStringLiteral("system");
 #endif
