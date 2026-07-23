@@ -789,7 +789,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         m_settings->registerSetting("ShowModIncompat", false);
 
         // Missing Yggdrasil agent behavior
-        m_settings->registerSetting("MissingYggdrasilAgentBehavior", (int)MissingYggdrasilAgentBehavior::Install);
+        m_settings->registerSetting("MissingYggdrasilAgentBehavior", (int)MissingYggdrasilAgentBehavior::Ask);
 
         // Yggdrasil agent options
         m_settings->registerSetting("YggdrasilAgentAutoUpdate", false);
