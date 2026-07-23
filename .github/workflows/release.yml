@@ -53,21 +53,6 @@ jobs:
 
           tar --exclude='.git' -czf FjordLauncher.tar.gz FjordLauncher
 
-          for d in FjordLauncher-Windows-MSVC*; do
-            cd "${d}" || continue
-            LEGACY="$(echo -n ${d} | grep -o Legacy || true)"
-            ARM64="$(echo -n ${d} | grep -o arm64 || true)"
-            INST="$(echo -n ${d} | grep -o Setup || true)"
-            PORT="$(echo -n ${d} | grep -o Portable || true)"
-            NAME="FjordLauncher-Windows-MSVC"
-            test -z "${LEGACY}" || NAME="${NAME}-Legacy"
-            test -z "${ARM64}" || NAME="${NAME}-arm64"
-            test -z "${PORT}" || NAME="${NAME}-Portable"
-            test -z "${INST}" || mv FjordLauncher-*.exe ../${NAME}-Setup.exe
-            test -n "${INST}" || zip -r -9 "../${NAME}.zip" *
-            cd ..
-          done
-
           for d in FjordLauncher-Windows-MinGW-w64*; do
             cd "${d}" || continue
             INST="$(echo -n ${d} | grep -o Setup || true)"
@@ -113,10 +98,4 @@ jobs:
             FjordLauncher-Windows-MinGW-arm64.zip
             FjordLauncher-Windows-MinGW-arm64-Portable.zip
             FjordLauncher-Windows-MinGW-arm64-Setup.exe
-            FjordLauncher-Windows-MSVC-arm64.zip
-            FjordLauncher-Windows-MSVC-arm64-Portable.zip
-            FjordLauncher-Windows-MSVC-arm64-Setup.exe
-            FjordLauncher-Windows-MSVC.zip
-            FjordLauncher-Windows-MSVC-Portable.zip
-            FjordLauncher-Windows-MSVC-Setup.exe
             FjordLauncher.tar.gz
